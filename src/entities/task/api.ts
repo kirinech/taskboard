@@ -5,7 +5,7 @@ export interface TasksQueryParams {
   status?: TaskStatus
   priority?: Task['priority']
   tags?: string
-  q?: string
+  title_like?: string
   _sort?: 'createdAt' | 'deadline'
   _order?: 'asc' | 'desc'
   _page?: number

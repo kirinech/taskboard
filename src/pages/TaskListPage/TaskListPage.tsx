@@ -2,12 +2,23 @@ import { Box, Center, Heading, SimpleGrid, Spinner, Text } from '@chakra-ui/reac
 import { useGetTagsQuery } from '@/entities/tag/api'
 import { useGetTasksQuery } from '@/entities/task/api'
 import { TaskCard } from '@/entities/task/ui/TaskCard'
+import { TaskFilters } from '@/features/task-filters'
 import type { Tag } from '@/shared/types/task'
+import { useTaskFilterParams } from './useTaskFilterParams'
 
 export function TaskListPage() {
-  const { data: tasksData, isLoading, isError } = useGetTasksQuery()
-  const { data: tags = [] } = useGetTagsQuery()
+  const { filters, apiSearch, handleChange } = useTaskFilterParams()
 
+  const { data: tasksData, isLoading, isError } = useGetTasksQuery({
+    ...(apiSearch && { title_like: apiSearch }),
+    ...(filters.status && { status: filters.status }),
+    ...(filters.priority && { priority: filters.priority }),
+    ...(filters.tagId && { tags: filters.tagId }),
+    _sort: filters.sortField,
+    _order: filters.sortOrder,
+  })
+
+  const { data: tags = [] } = useGetTagsQuery()
   const tagMap = Object.fromEntries(tags.map((tag) => [tag.id, tag]))
 
   if (isLoading) {
@@ -32,8 +43,10 @@ export function TaskListPage() {
     <Box p={6} maxW="1200px" mx="auto">
       <Heading mb={6}>Tasks</Heading>
 
+      <TaskFilters value={filters} onChange={handleChange} tags={tags} />
+
       {tasks.length === 0 ? (
-        <Text color="gray.500">No tasks yet.</Text>
+        <Text color="gray.500">No tasks match the current filters.</Text>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
           {tasks.map((task) => (
