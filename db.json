@@ -1,0 +1,45 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Set up project infrastructure",
+      "description": "Configure Vite, TypeScript, RTK Query, and other tooling",
+      "status": "done",
+      "priority": "high",
+      "deadline": "2026-04-28",
+      "tags": ["1", "2"],
+      "createdAt": "2026-04-20T10:00:00.000Z",
+      "updatedAt": "2026-04-28T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "Implement task list page",
+      "description": "Display tasks as cards with filtering and sorting",
+      "status": "inProgress",
+      "priority": "high",
+      "deadline": "2026-05-05",
+      "tags": ["2"],
+      "createdAt": "2026-04-21T10:00:00.000Z",
+      "updatedAt": "2026-04-21T10:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "title": "Write unit tests",
+      "description": "Cover critical components and hooks with React Testing Library",
+      "status": "todo",
+      "priority": "medium",
+      "deadline": "2026-05-10",
+      "tags": ["3"],
+      "createdAt": "2026-04-22T10:00:00.000Z",
+      "updatedAt": "2026-04-22T10:00:00.000Z"
+    }
+  ],
+  "tags": [
+    { "id": "1", "name": "Infrastructure" },
+    { "id": "2", "name": "Feature" },
+    { "id": "3", "name": "Testing" },
+    { "id": "4", "name": "Bug" },
+    { "id": "5", "name": "Documentation" },
+    { "id": "6", "name": "Refactoring" }
+  ]
+}
