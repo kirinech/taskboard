@@ -19,6 +19,7 @@ interface Props {
   task: Task
   tags: Tag[]
   onTagClick?: (tag: Tag) => void
+  onClick?: () => void
 }
 
 const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
@@ -45,7 +46,7 @@ const PRIORITY_COLOR: Record<Task['priority'], string> = {
   high: 'red',
 }
 
-export function TaskCard({ task, tags, onTagClick }: Props) {
+export function TaskCard({ task, tags, onTagClick, onClick }: Props) {
   const [updateStatus, { isLoading }] = useUpdateTaskStatusMutation()
   const isOverdue = new Date(task.deadline) < new Date() && task.status !== 'done'
   const color = STATUS_COLOR[task.status]
@@ -55,7 +56,13 @@ export function TaskCard({ task, tags, onTagClick }: Props) {
   }
 
   return (
-    <Card className={isOverdue ? styles.overdue : undefined} h="full">
+    <Card
+      className={isOverdue ? styles.overdue : undefined}
+      h="full"
+      onClick={onClick}
+      cursor={onClick ? 'pointer' : 'default'}
+      _hover={onClick ? { shadow: 'md', transform: 'translateY(-1px)', transition: 'all 0.15s' } : undefined}
+    >
       <CardBody display="flex" flexDirection="column" gap={3}>
         <Flex justify="space-between" align="center">
           <Badge colorScheme={PRIORITY_COLOR[task.priority]}>

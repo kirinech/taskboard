@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, Heading, SimpleGrid, Spinner, Text, useDisclosure } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 import { useGetTagsQuery } from '@/entities/tag/api'
 import { useGetTasksQuery } from '@/entities/task/api'
 import { TaskCard } from '@/entities/task/ui/TaskCard'
@@ -9,6 +10,7 @@ import { useTaskFilterParams } from './useTaskFilterParams'
 
 export function TaskListPage() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const navigate = useNavigate()
   const { filters, apiSearch, handleChange } = useTaskFilterParams()
 
   const { data: tasksData, isLoading, isError } = useGetTasksQuery({
@@ -64,6 +66,7 @@ export function TaskListPage() {
                 .map((id) => tagMap[id])
                 .filter((t): t is Tag => Boolean(t))}
               onTagClick={(tag) => handleChange('tagId', tag.id)}
+              onClick={() => navigate(`/tasks/${task.id}`)}
             />
           ))}
         </SimpleGrid>
