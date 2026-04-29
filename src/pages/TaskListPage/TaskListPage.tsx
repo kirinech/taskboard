@@ -1,12 +1,14 @@
-import { Box, Center, Heading, SimpleGrid, Spinner, Text } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Heading, SimpleGrid, Spinner, Text, useDisclosure } from '@chakra-ui/react'
 import { useGetTagsQuery } from '@/entities/tag/api'
 import { useGetTasksQuery } from '@/entities/task/api'
 import { TaskCard } from '@/entities/task/ui/TaskCard'
 import { TaskFilters } from '@/features/task-filters'
+import { TagFormModal } from '@/features/tag-form'
 import type { Tag } from '@/shared/types/task'
 import { useTaskFilterParams } from './useTaskFilterParams'
 
 export function TaskListPage() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const { filters, apiSearch, handleChange } = useTaskFilterParams()
 
   const { data: tasksData, isLoading, isError } = useGetTasksQuery({
@@ -41,7 +43,12 @@ export function TaskListPage() {
 
   return (
     <Box p={6} maxW="1200px" mx="auto">
-      <Heading mb={6}>Tasks</Heading>
+      <Flex justify="space-between" align="center" mb={6}>
+        <Heading>Tasks</Heading>
+        <Button colorScheme="teal" onClick={onOpen}>+ Add tag</Button>
+      </Flex>
+
+      <TagFormModal isOpen={isOpen} onClose={onClose} />
 
       <TaskFilters value={filters} onChange={handleChange} tags={tags} />
 
