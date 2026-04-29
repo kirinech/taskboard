@@ -100,7 +100,7 @@ export function TaskDetailPage() {
     .filter((t): t is Tag => Boolean(t))
 
   return (
-    <Box p={6} maxW="800px" mx="auto">
+    <Box p={6} maxW="1200px" mx="auto">
       <Button variant="ghost" onClick={() => navigate('/')} mb={4} pl={0}>
         ← Back
       </Button>
@@ -115,7 +115,7 @@ export function TaskDetailPage() {
 
       <Divider mb={6} />
 
-      <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={6} mb={6}>
+      <SimpleGrid maxW="800px" columns={{ base: 1, sm: 2 }} spacing={6} mb={6}>
         <Field label="Status">
           <Badge colorScheme={STATUS_COLOR[task.status]} fontSize="sm">
             {STATUS_LABEL[task.status]}
