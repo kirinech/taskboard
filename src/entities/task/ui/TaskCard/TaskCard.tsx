@@ -18,6 +18,7 @@ import styles from './TaskCard.module.css'
 interface Props {
   task: Task
   tags: Tag[]
+  onTagClick?: (tag: Tag) => void
 }
 
 const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
@@ -44,7 +45,7 @@ const PRIORITY_COLOR: Record<Task['priority'], string> = {
   high: 'red',
 }
 
-export function TaskCard({ task, tags }: Props) {
+export function TaskCard({ task, tags, onTagClick }: Props) {
   const [updateStatus, { isLoading }] = useUpdateTaskStatusMutation()
   const isOverdue = new Date(task.deadline) < new Date() && task.status !== 'done'
   const color = STATUS_COLOR[task.status]
@@ -113,7 +114,14 @@ export function TaskCard({ task, tags }: Props) {
           <Wrap spacing={1}>
             {tags.map((tag) => (
               <WrapItem key={tag.id}>
-                <ChakraTag size="sm" variant="subtle" colorScheme="purple">
+                <ChakraTag
+                  size="sm"
+                  variant="subtle"
+                  colorScheme="purple"
+                  cursor={onTagClick ? 'pointer' : 'default'}
+                  onClick={onTagClick ? (e) => { e.stopPropagation(); onTagClick(tag) } : undefined}
+                  _hover={onTagClick ? { opacity: 0.75 } : undefined}
+                >
                   {tag.name}
                 </ChakraTag>
               </WrapItem>

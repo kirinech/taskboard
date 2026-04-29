@@ -56,6 +56,7 @@ export function TaskListPage() {
               tags={task.tags
                 .map((id) => tagMap[id])
                 .filter((t): t is Tag => Boolean(t))}
+              onTagClick={(tag) => handleChange('tagId', tag.id)}
             />
           ))}
         </SimpleGrid>
