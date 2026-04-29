@@ -11,6 +11,7 @@ import {
   Center,
   Divider,
   Flex,
+  HStack,
   Heading,
   SimpleGrid,
   Spinner,
@@ -24,6 +25,7 @@ import { useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetTagsQuery } from '@/entities/tag/api'
 import { useDeleteTaskMutation, useGetTaskByIdQuery } from '@/entities/task/api'
+import { TaskFormModal } from '@/features/task-form'
 import type { Tag, Task } from '@/shared/types/task'
 
 const STATUS_LABEL: Record<Task['status'], string> = {
@@ -61,7 +63,8 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 export function TaskDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const deleteDialog = useDisclosure()
+  const editModal = useDisclosure()
   const cancelRef = useRef<HTMLButtonElement>(null)
 
   const { data: task, isLoading, isError } = useGetTaskByIdQuery(id!)
@@ -104,9 +107,10 @@ export function TaskDetailPage() {
 
       <Flex justify="space-between" align="flex-start" mb={6} gap={4}>
         <Heading size="lg">{task.title}</Heading>
-        <Button colorScheme="red" flexShrink={0} onClick={onOpen}>
-          Delete
-        </Button>
+        <HStack flexShrink={0}>
+          <Button colorScheme="blue" onClick={editModal.onOpen}>Edit</Button>
+          <Button colorScheme="red" onClick={deleteDialog.onOpen}>Delete</Button>
+        </HStack>
       </Flex>
 
       <Divider mb={6} />
@@ -165,7 +169,9 @@ export function TaskDetailPage() {
         </>
       )}
 
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} isCentered>
+      <TaskFormModal isOpen={editModal.isOpen} onClose={editModal.onClose} task={task} />
+
+      <AlertDialog isOpen={deleteDialog.isOpen} leastDestructiveRef={cancelRef} onClose={deleteDialog.onClose} isCentered>
         <AlertDialogOverlay />
         <AlertDialogContent>
           <AlertDialogHeader>Delete task</AlertDialogHeader>
@@ -173,12 +179,8 @@ export function TaskDetailPage() {
             Are you sure you want to delete &ldquo;{task.title}&rdquo;? This action cannot be undone.
           </AlertDialogBody>
           <AlertDialogFooter gap={2}>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="red" isLoading={isDeleting} onClick={handleDelete}>
-              Delete
-            </Button>
+            <Button ref={cancelRef} onClick={deleteDialog.onClose}>Cancel</Button>
+            <Button colorScheme="red" isLoading={isDeleting} onClick={handleDelete}>Delete</Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

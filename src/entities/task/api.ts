@@ -18,7 +18,8 @@ export interface TasksResponse {
 }
 
 export type CreateTaskDto = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
-export type UpdateTaskDto = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
+
+export type UpdateTaskDto = Omit<Task, 'id' | 'updatedAt'>
 
 export const taskApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -35,9 +36,9 @@ export const taskApi = baseApi.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: 'Task' as const, id })),
-              { type: 'Task', id: 'LIST' },
-            ]
+            ...result.data.map(({ id }) => ({ type: 'Task' as const, id })),
+            { type: 'Task', id: 'LIST' },
+          ]
           : [{ type: 'Task', id: 'LIST' }],
     }),
 

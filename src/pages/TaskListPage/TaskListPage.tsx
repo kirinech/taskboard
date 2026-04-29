@@ -1,15 +1,17 @@
-import { Box, Button, Center, Flex, Heading, SimpleGrid, Spinner, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Heading, HStack, SimpleGrid, Spinner, Text, useDisclosure } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useGetTagsQuery } from '@/entities/tag/api'
 import { useGetTasksQuery } from '@/entities/task/api'
 import { TaskCard } from '@/entities/task/ui/TaskCard'
 import { TaskFilters } from '@/features/task-filters'
 import { TagFormModal } from '@/features/tag-form'
+import { TaskFormModal } from '@/features/task-form'
 import type { Tag } from '@/shared/types/task'
 import { useTaskFilterParams } from './useTaskFilterParams'
 
 export function TaskListPage() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const tagModal = useDisclosure()
+  const taskModal = useDisclosure()
   const navigate = useNavigate()
   const { filters, apiSearch, handleChange } = useTaskFilterParams()
 
@@ -47,10 +49,14 @@ export function TaskListPage() {
     <Box p={6} maxW="1200px" mx="auto">
       <Flex justify="space-between" align="center" mb={6}>
         <Heading>Tasks</Heading>
-        <Button colorScheme="teal" onClick={onOpen}>+ Add tag</Button>
+        <HStack>
+          <Button variant="outline" onClick={tagModal.onOpen}>+ Add tag</Button>
+          <Button colorScheme="blue" onClick={taskModal.onOpen}>+ Add task</Button>
+        </HStack>
       </Flex>
 
-      <TagFormModal isOpen={isOpen} onClose={onClose} />
+      <TagFormModal isOpen={tagModal.isOpen} onClose={tagModal.onClose} />
+      <TaskFormModal isOpen={taskModal.isOpen} onClose={taskModal.onClose} />
 
       <TaskFilters value={filters} onChange={handleChange} tags={tags} />
 
