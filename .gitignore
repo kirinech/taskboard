@@ -22,3 +22,5 @@ storybook-static/
 
 # TypeScript
 *.tsbuildinfo
+
+coverage/
