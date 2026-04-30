@@ -35,11 +35,10 @@ npm run dev      # Vite dev server на http://localhost:5173
 | `npm run coverage` | Отчёт о покрытии              |
 | `npm run lint`     | ESLint                        |
 | `npm run lint:css` | Stylelint                     |
-| `npm run build`    | Production-сборка             |
 
 ## Архитектура (Feature-Sliced Design)
 
-Проект следует методологии [Feature-Sliced Design](https://feature-sliced.design/). Код разделён на слои с однонаправленными зависимостями: каждый слой может импортировать только из слоёв **ниже** себя.
+Проект следует методологии [Feature-Sliced Design](https://feature-sliced.design/).
 
 ```
 src/
@@ -54,7 +53,7 @@ src/
 
 **`app`** — точка входа. Конфигурирует Redux store, подключает роутер и провайдеры.
 
-**`pages`** — полноценные страницы (`TaskListPage`, `TaskDetailPage`). Собирают фичи и сущности в единый экран. Могут содержать локальные хуки (например, `useTaskFilterParams` для синхронизации фильтров с URL).
+**`pages`** — компоненты страниц (`TaskListPage`, `TaskDetailPage`). Собирают компоненты и фичи воедино.
 
 **`features`** — изолированные сценарии взаимодействия:
 
@@ -64,12 +63,12 @@ src/
 
 **`entities`** — бизнес-сущности без привязки к конкретному сценарию:
 
-- `task` — RTK Query эндпоинты (`getTasks`, `createTask`, `updateTask`, …) и компонент `TaskCard`
-- `tag` — RTK Query эндпоинты (`getTags`, `createTag`)
+- `task` — RTK Query эндпоинты и компонент отображения карточки задачи
+- `tag` — RTK Query эндпоинты
 
-**`shared`** — всё, что не принадлежит конкретному слою:
+**`shared`** — всё, что не принадлежит конкретному слою и может переиспользоваться:
 
 - `api/` — базовый `createApi` (baseApi)
-- `types/` — общие TypeScript-типы (`Task`, `Tag`, …)
+- `types/` — типы TypeScript (`Task`, `Tag`, …)
 - `hooks/` — утилитарные хуки (`useDebounce`)
 - `ui/` — переиспользуемые компоненты (`Pagination`)
