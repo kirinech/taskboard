@@ -6,14 +6,17 @@ import { TaskCard } from '@/entities/task/ui/TaskCard'
 import { TaskFilters } from '@/features/task-filters'
 import { TagFormModal } from '@/features/tag-form'
 import { TaskFormModal } from '@/features/task-form'
+import { Pagination } from '@/shared/ui/Pagination'
 import type { Tag } from '@/shared/types/task'
 import { useTaskFilterParams } from './useTaskFilterParams'
+
+const ITEMS_PER_PAGE = 9
 
 export function TaskListPage() {
   const tagModal = useDisclosure()
   const taskModal = useDisclosure()
   const navigate = useNavigate()
-  const { filters, apiSearch, handleChange } = useTaskFilterParams()
+  const { filters, apiSearch, handleChange, page, onPageChange } = useTaskFilterParams()
 
   const { data: tasksData, isLoading, isError } = useGetTasksQuery({
     ...(apiSearch && { title_like: apiSearch }),
@@ -22,6 +25,8 @@ export function TaskListPage() {
     ...(filters.tagId && { tags: filters.tagId }),
     _sort: filters.sortField,
     _order: filters.sortOrder,
+    _page: page,
+    _limit: ITEMS_PER_PAGE,
   })
 
   const { data: tags = [] } = useGetTagsQuery()
@@ -44,6 +49,7 @@ export function TaskListPage() {
   }
 
   const tasks = tasksData?.data ?? []
+  const totalPages = Math.ceil((tasksData?.total ?? 0) / ITEMS_PER_PAGE)
 
   return (
     <Box p={6} maxW="1200px" mx="auto">
@@ -77,6 +83,8 @@ export function TaskListPage() {
           ))}
         </SimpleGrid>
       )}
+
+      <Pagination page={page} totalPages={totalPages} onChange={onPageChange} />
     </Box>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import type { TaskFiltersValue } from '@/features/task-filters'
 import { useDebounce } from '@/shared/hooks/useDebounce'
@@ -26,12 +26,14 @@ function readFilters(params: URLSearchParams): TaskFiltersValue {
 export function useTaskFilterParams() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  // Search input is kept in local state so the input stays responsive while typing.
-  // The debounced value is what gets written to the URL (and drives the API query).
   const [searchInput, setSearchInput] = useState(() => searchParams.get('search') ?? '')
   const debouncedSearch = useDebounce(searchInput, 200)
+  const prevSearchRef = useRef(debouncedSearch)
 
   useEffect(() => {
+    const searchChanged = debouncedSearch !== prevSearchRef.current
+    prevSearchRef.current = debouncedSearch
+
     setSearchParams(
       (prev) => {
         const next = new URLSearchParams(prev)
@@ -40,11 +42,29 @@ export function useTaskFilterParams() {
         } else {
           next.delete('search')
         }
+        if (searchChanged) next.delete('page')
         return next
       },
       { replace: true },
     )
   }, [debouncedSearch, setSearchParams])
+
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10))
+
+  function onPageChange(newPage: number) {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        if (newPage <= 1) {
+          next.delete('page')
+        } else {
+          next.set('page', String(newPage))
+        }
+        return next
+      },
+      { replace: true },
+    )
+  }
 
   function handleChange<K extends keyof TaskFiltersValue>(key: K, val: TaskFiltersValue[K]) {
     if (key === 'search') {
@@ -60,20 +80,19 @@ export function useTaskFilterParams() {
         } else {
           next.set(key, String(val))
         }
+        next.delete('page')
         return next
       },
       { replace: true },
     )
   }
 
-  // Filters shown in the UI — search reflects the live input, not the URL
   const filters: TaskFiltersValue = {
     ...readFilters(searchParams),
     search: searchInput,
   }
 
-  // The search value that drives the API — comes from the URL (i.e. already debounced)
   const apiSearch = searchParams.get('search') ?? ''
 
-  return { filters, apiSearch, handleChange }
+  return { filters, apiSearch, handleChange, page, onPageChange }
 }
