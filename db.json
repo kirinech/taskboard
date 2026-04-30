@@ -39,6 +39,165 @@
       ],
       "createdAt": "2026-04-22T10:00:00.000Z",
       "updatedAt": "2026-04-29T17:18:23.659Z"
+    },
+    {
+      "id": "4",
+      "title": "Set up RTK Query API with json-server",
+      "description": "Create baseApi, inject task and tag endpoints, configure the Redux store and typed hooks",
+      "status": "done",
+      "priority": "high",
+      "deadline": "2026-04-22",
+      "tags": [
+        "1",
+        "2"
+      ],
+      "createdAt": "2026-04-21T14:00:00.000Z",
+      "updatedAt": "2026-04-22T11:00:00.000Z"
+    },
+    {
+      "id": "5",
+      "title": "Add filters, search and sorting to task list",
+      "description": "Implement status, priority and tag filters, 200ms debounced title search, and asc/desc sort by created date or deadline. Persist all state in URL query params.",
+      "status": "done",
+      "priority": "high",
+      "deadline": "2026-04-24",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-22T15:00:00.000Z",
+      "updatedAt": "2026-04-24T16:00:00.000Z"
+    },
+    {
+      "id": "6",
+      "title": "Quick-change task status via card dropdown",
+      "description": "Replace static status badge with an inline Select that calls PATCH /tasks/:id on change. Dim the control while the request is in flight.",
+      "status": "done",
+      "priority": "medium",
+      "deadline": "2026-04-25",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-23T09:00:00.000Z",
+      "updatedAt": "2026-04-25T10:00:00.000Z"
+    },
+    {
+      "id": "7",
+      "title": "Task detail page with delete confirmation",
+      "description": "Add /tasks/:id route that shows all task fields. Delete button opens an AlertDialog; on confirm the task is removed and the user is redirected to the list.",
+      "status": "done",
+      "priority": "high",
+      "deadline": "2026-04-27",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-24T10:00:00.000Z",
+      "updatedAt": "2026-04-27T14:00:00.000Z"
+    },
+    {
+      "id": "8",
+      "title": "Task create/edit form with validation",
+      "description": "Single modal form for both create and edit modes. Fields: title (min 5 chars), description (max 500), status dropdown, priority radio group, deadline date picker, tags autocomplete. Validated with zod + react-hook-form.",
+      "status": "done",
+      "priority": "high",
+      "deadline": "2026-04-28",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-25T09:00:00.000Z",
+      "updatedAt": "2026-04-28T17:00:00.000Z"
+    },
+    {
+      "id": "9",
+      "title": "Tags autocomplete with inline tag creation",
+      "description": "Multi-select input that filters existing tags by substring, shows a 'Create X' option when there is no exact match, and renders selected tags as dismissible chips. Dropdown rendered in a Portal to prevent modal layout shift.",
+      "status": "done",
+      "priority": "medium",
+      "deadline": "2026-04-28",
+      "tags": [
+        "2",
+        "4"
+      ],
+      "createdAt": "2026-04-25T11:00:00.000Z",
+      "updatedAt": "2026-04-28T18:00:00.000Z"
+    },
+    {
+      "id": "10",
+      "title": "Tag creation form with duplicate validation",
+      "description": "Modal with a single name field. Zod schema is rebuilt on each render using useMemo over the current tag list so the refine check always sees fresh data.",
+      "status": "done",
+      "priority": "medium",
+      "deadline": "2026-04-29",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-26T10:00:00.000Z",
+      "updatedAt": "2026-04-29T09:00:00.000Z"
+    },
+    {
+      "id": "11",
+      "title": "Filter by tag via card click",
+      "description": "Clicking a tag chip on a task card sets the tag filter in the URL, same as choosing the tag from the filter bar dropdown.",
+      "status": "done",
+      "priority": "low",
+      "deadline": "2026-04-29",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-26T14:00:00.000Z",
+      "updatedAt": "2026-04-29T10:00:00.000Z"
+    },
+    {
+      "id": "12",
+      "title": "Pagination — 9 items per page",
+      "description": "Add _page/_limit params to the task query. Read X-Total-Count from json-server response headers. Render a compact Pagination component with ellipsis support below the grid.",
+      "status": "done",
+      "priority": "medium",
+      "deadline": "2026-04-30",
+      "tags": [
+        "2"
+      ],
+      "createdAt": "2026-04-27T10:00:00.000Z",
+      "updatedAt": "2026-04-30T11:00:00.000Z"
+    },
+    {
+      "id": "13",
+      "title": "Write Storybook stories for core UI components",
+      "description": "Add stories for TaskCard (all statuses, overdue state), TaskFilters, Pagination, TagFormModal and TaskFormModal. Configure ChakraProvider and Redux Provider as global decorators.",
+      "status": "todo",
+      "priority": "medium",
+      "deadline": "2026-05-12",
+      "tags": [
+        "3",
+        "5"
+      ],
+      "createdAt": "2026-04-30T09:00:00.000Z",
+      "updatedAt": "2026-04-30T09:00:00.000Z"
+    },
+    {
+      "id": "14",
+      "title": "Add unit and integration tests",
+      "description": "Test useDebounce hook, useTaskFilterParams URL sync, TaskCard rendering and status dropdown, and the TagsAutocomplete create flow. Use React Testing Library with MSW for API mocking.",
+      "status": "todo",
+      "priority": "high",
+      "deadline": "2026-05-19",
+      "tags": [
+        "3"
+      ],
+      "createdAt": "2026-04-30T09:30:00.000Z",
+      "updatedAt": "2026-04-30T09:30:00.000Z"
+    },
+    {
+      "title": "Add README with setup guide and architecture overview",
+      "description": "Cover project description, prerequisites, dev/server/test/storybook scripts, feature list, and a brief architecture section explaining the FSD-inspired folder structure and data flow.",
+      "status": "todo",
+      "priority": "low",
+      "deadline": "2026-05-01",
+      "tags": [
+        "5"
+      ],
+      "createdAt": "2026-04-30T10:00:00.000Z",
+      "id": "15",
+      "updatedAt": "2026-04-30T10:22:24.650Z"
     }
   ],
   "tags": [
